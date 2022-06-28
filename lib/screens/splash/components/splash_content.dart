@@ -28,7 +28,7 @@ class SplashContent extends StatelessWidget {
         Text(
           heading,
           style: TextStyle(
-            fontSize: getProportionateScreenWidth(24),
+            fontSize: 24,
             color: kTextColor,
             fontWeight: FontWeight.bold,
           ),
@@ -39,7 +39,7 @@ class SplashContent extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: getProportionateScreenWidth(12),
+              fontSize: 12,
               color: kTextColorSecondary,
             ),
             textAlign: TextAlign.center,

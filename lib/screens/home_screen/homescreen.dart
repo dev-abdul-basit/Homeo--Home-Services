@@ -40,13 +40,6 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 16, 0, 0),
               child: IconButton(
-                icon: const Icon(Icons.search_outlined),
-                onPressed: () {},
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 16, 0, 0),
-              child: IconButton(
                 icon: const Icon(Icons.notifications_active_outlined),
                 onPressed: () {},
               ),
@@ -57,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {},
                 child: const CircleAvatar(
                   radius: 18.0,
-                  backgroundImage: AssetImage("assets/images/user.png"),
+                  backgroundImage: AssetImage("assets/images/cleaner_2.png"),
                   backgroundColor: Colors.transparent,
                 ),
               ),

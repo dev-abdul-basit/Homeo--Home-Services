@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/custom_logout_dialog.dart';
 import '../../../constants.dart';
+import '../../map_location/map_location_screen.dart';
 
 class ProfilePreferences extends StatefulWidget {
   const ProfilePreferences({Key? key}) : super(key: key);
@@ -17,10 +19,12 @@ class _ProfilePreferencesState extends State<ProfilePreferences> {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, MapScreen.routeName);
+            },
             child: ListTile(
               title: const Text(
-                'Payment Methods',
+                'Adress Details',
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: kTextColor,
@@ -34,7 +38,7 @@ class _ProfilePreferencesState extends State<ProfilePreferences> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Icon(
-                  Icons.payment,
+                  Icons.location_on_rounded,
                   color: kTextColor,
                 ),
               ),
@@ -49,135 +53,23 @@ class _ProfilePreferencesState extends State<ProfilePreferences> {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: const Text(
-                'Order History',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: kTextColor,
-                    fontSize: 15),
-              ),
-              leading: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: kTextColorSecondary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: const Icon(
-                  Icons.history,
-                  color: kTextColor,
-                ),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: kTextColor,
-                size: 12,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: const Text(
-                'Settings',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: kTextColor,
-                    fontSize: 15),
-              ),
-              leading: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: kTextColorSecondary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: const Icon(
-                  Icons.settings,
-                  color: kTextColor,
-                ),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: kTextColor,
-                size: 12,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: const Text(
-                'Delivery Details',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: kTextColor,
-                    fontSize: 15),
-              ),
-              leading: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: kTextColorSecondary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: const Icon(
-                  Icons.location_on,
-                  color: kTextColor,
-                ),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: kTextColor,
-                size: 12,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: const Text(
-                'Language',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: kTextColor,
-                    fontSize: 15),
-              ),
-              leading: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: kTextColorSecondary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: const Icon(
-                  Icons.language,
-                  color: kTextColor,
-                ),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: kTextColor,
-                size: 12,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: InkWell(
-            onTap: () {},
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    // Navigator.of(context).pop();
+
+                    return CustomLogoutDialog(
+                      press: () {
+                        Navigator.of(context).pop();
+                      },
+                      close: () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  });
+            },
             child: ListTile(
               title: const Text(
                 'Logout',

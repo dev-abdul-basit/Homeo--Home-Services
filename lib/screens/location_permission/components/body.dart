@@ -53,7 +53,7 @@ class _BodyState extends State<Body> {
               padding: EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  "This app requires access to your\nlocation to match with the nearest\nGrocery Store! ",
+                  "This app requires access to your\nlocation to match with the nearest\nService Providers! ",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18, color: Colors.black45),
                 ),

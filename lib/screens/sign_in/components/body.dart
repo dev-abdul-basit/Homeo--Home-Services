@@ -57,31 +57,37 @@ class Body extends StatelessWidget {
                           elevation: 8.0,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    "Welcome Back",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: kTextColor,
-                                      fontSize: getProportionateScreenWidth(20),
-                                      fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      "Welcome Back",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: kTextColor,
+                                        fontSize:
+                                            getProportionateScreenWidth(20),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "Sign in to continue.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: kTextColorSecondary,
-                                      fontSize: getProportionateScreenWidth(14),
+                                    Text(
+                                      "Sign in to continue.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: kTextColorSecondary,
+                                        fontSize:
+                                            getProportionateScreenWidth(14),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                      height: getProportionateScreenHeight(4)),
-                                  const SignForm(),
-                                ]),
+                                    SizedBox(
+                                        height:
+                                            getProportionateScreenHeight(4)),
+                                    const SignForm(),
+                                  ]),
+                            ),
                           ),
                         ),
                       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:handyman/screens/view_bookings/view_bookings_screen.dart';
+import 'package:handyman/screens/all_services_screen/all_services_screen.dart';
 
 import 'package:handyman/screens/home_screen/homescreen.dart';
 import 'package:handyman/screens/profile/profile_screen.dart';
@@ -75,23 +77,25 @@ class CustomBottomNavBar extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.list_alt_outlined,
-                      color: MenuState.orders == selectedMenu
+                      color: MenuState.services == selectedMenu
                           ? kPrimaryColor
                           : inActiveIconColor,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, AllServicesScreen.routeName);
+                    },
                   ),
                   Container(
-                    child: MenuState.orders == selectedMenu
+                    child: MenuState.services == selectedMenu
                         ? const Visibility(
                             child: Text(
-                              "Orders",
+                              "Services",
                               style: TextStyle(color: kPrimaryColor),
                             ),
                             visible: true,
                           )
                         : const Visibility(
-                            child: Text("Orders"),
+                            child: Text("Services"),
                             visible: false,
                           ),
                   ),
@@ -102,71 +106,72 @@ class CustomBottomNavBar extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(
-                      Icons.message_outlined,
-                      color: MenuState.chat == selectedMenu
+                      Icons.bookmark_added_rounded,
+                      color: MenuState.bookings == selectedMenu
                           ? kPrimaryColor
                           : inActiveIconColor,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, ViewAllBookingsScreen.routeName);
+                    },
                   ),
                   Container(
-                    child: MenuState.chat == selectedMenu
+                    child: MenuState.bookings == selectedMenu
                         ? const Visibility(
                             child: Text(
-                              "Chat",
+                              "Bookings",
                               style: TextStyle(color: kPrimaryColor),
                             ),
                             visible: true,
                           )
                         : const Visibility(
-                            child: Text("Chat"),
+                            child: Text("Bookings"),
                             visible: false,
                           ),
                   ),
                 ],
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.store_mall_directory,
-                      color: MenuState.cart == selectedMenu
-                          ? kPrimaryColor
-                          : inActiveIconColor,
-                    ),
-                    onPressed: () {},
-                  ),
-                  Container(
-                    child: MenuState.cart == selectedMenu
-                        ? const Visibility(
-                            child: Text(
-                              "Cart",
-                              style: TextStyle(color: kPrimaryColor),
-                            ),
-                            visible: true,
-                          )
-                        : const Visibility(
-                            child: Text("Cart"),
-                            visible: false,
-                          ),
-                  ),
-                ],
-              ),
+              // Column(
+              //   mainAxisSize: MainAxisSize.min,
+              //   children: [
+              //     IconButton(
+              //       icon: Icon(
+              //         Icons.store_mall_directory,
+              //         color: MenuState.cart == selectedMenu
+              //             ? kPrimaryColor
+              //             : inActiveIconColor,
+              //       ),
+              //       onPressed: () {},
+              //     ),
+              //     Container(
+              //       child: MenuState.cart == selectedMenu
+              //           ? const Visibility(
+              //               child: Text(
+              //                 "Cart",
+              //                 style: TextStyle(color: kPrimaryColor),
+              //               ),
+              //               visible: true,
+              //             )
+              //           : const Visibility(
+              //               child: Text("Cart"),
+              //               visible: false,
+              //             ),
+              //     ),
+              //   ],
+              // ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
                       icon: Icon(
-                        Icons.person_add_alt_outlined,
+                        Icons.person_outline_rounded,
                         color: MenuState.profile == selectedMenu
                             ? kPrimaryColor
                             : inActiveIconColor,
                       ),
                       onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            ProfileScreen.routeName, (route) => false);
-                        // Navigator.pushNamed(context, ProfileScreen.routeName),
+                        Navigator.pushNamed(context, ProfileScreen.routeName);
                       }),
                   Container(
                     child: MenuState.profile == selectedMenu

@@ -8,6 +8,8 @@ import 'package:handyman/size_config.dart';
 
 // This is the best practice
 
+import '../../../helper/global_config.dart';
+import '../../home_screen/homescreen.dart';
 import '../components/splash_content.dart';
 import '../../../components/default_button.dart';
 import '../../../components/secondry_btn.dart';
@@ -20,16 +22,16 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if (box!.containsKey("login")) {
-  //     Future.delayed(Duration.zero, () {
-  //       Navigator.of(context)
-  //           .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
-  //     });
-  //   }
-  // }
+  @override
+  void initState() {
+    super.initState();
+    if (box!.containsKey("login")) {
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
+      });
+    }
+  }
 
   int currentPage = 0;
   List<Map<String, String>> splashData = [

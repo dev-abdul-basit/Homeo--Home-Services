@@ -34,18 +34,18 @@ class _SignFormState extends State<SignForm> {
     });
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if (box!.containsKey("login")) {
-  //     Future.delayed(Duration.zero, () {
-  //       Navigator.of(context)
-  //           .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
-  //     });
+  @override
+  void initState() {
+    super.initState();
+    if (box!.containsKey("login")) {
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
+      });
 
-  //     isLogin = true;
-  //   }
-  // }
+      isLogin = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,18 +88,21 @@ class _SignFormState extends State<SignForm> {
           ),
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(
-            text: "Sign In",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // box!.put("login", true);
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(
-                    context, LocationPermissionScreen.routeName);
-              }
-            },
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 12),
+            child: DefaultButton(
+              text: "Sign In",
+              press: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  // if all are valid then go to success screen
+                  box!.put("login", true);
+                  KeyboardUtil.hideKeyboard(context);
+                  Navigator.pushNamed(
+                      context, LocationPermissionScreen.routeName);
+                }
+              },
+            ),
           ),
         ],
       ),
