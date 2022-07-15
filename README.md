@@ -1,6 +1,8 @@
-# handyman
+# Homeo - Home Services
 
-A new Flutter project.
+Home Services & House Work - Flutter UI Kit
+
+![Demo](/uigif.gif)
 
 ## Getting Started
 
