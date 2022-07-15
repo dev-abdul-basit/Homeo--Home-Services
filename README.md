@@ -2,6 +2,8 @@
 
 Home Services & House Work - Flutter UI Kit
 
+![App UI](/uikit.png)
+
 ![Demo](/uigif.gif)
 
 ## Getting Started
