@@ -9,7 +9,6 @@ import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-//void main() => runApp(const MyApp());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
       title: 'Grocer App',
       theme: theme(),
       initialRoute: SplashScreen.routeName,
-      // home: const SplashScreen(),
       routes: routes,
     );
   }

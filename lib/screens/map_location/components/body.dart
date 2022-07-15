@@ -1,9 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:handyman/components/default_button.dart';
 import '../../../constants.dart';
 import '../../home_screen/homescreen.dart';
+import 'package:geocoding/geocoding.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -14,118 +17,185 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final Completer<GoogleMapController> _controller = Completer();
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.0,
-  );
-
+  LatLng currentPostion = const LatLng(0.0, 0.0);
   String? searchText;
   final _formKey = GlobalKey<FormState>();
+
+  String _address = "UnKnown Location";
+
+  void _getUserLocation() async {
+    Position _position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    setState(() {
+      currentPostion = LatLng(_position.latitude, _position.longitude);
+      moveCamera(LatLng(_position.latitude, _position.longitude));
+      print("latlong::");
+      print(currentPostion);
+    });
+
+    // getting adress from latlong
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(_position.latitude, _position.longitude);
+    Placemark placeMark = placemarks[0];
+    String? name = placeMark.name;
+    String? subLocality = placeMark.subLocality;
+    String? locality = placeMark.locality;
+    String? administrativeArea = placeMark.administrativeArea;
+    String? postalCode = placeMark.postalCode;
+    String? country = placeMark.country;
+    String address =
+        "$name, $subLocality, $locality, $administrativeArea $postalCode, $country";
+
+    setState(() {
+      print("address:::");
+      print(address);
+      _address = address; // update _address
+    });
+  }
+
+  Future<void> moveCamera(LatLng latLng) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: latLng,
+      zoom: 15,
+    )));
+  }
+
+  _onCameraMove(CameraPosition position) {
+    currentPostion = position.target;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Stack(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(48.0, 24.0, 48.0, 48.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 150,
+            child: Column(children: <Widget>[
               SizedBox(
                 child: Form(
                   key: _formKey,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                          onSaved: (newValue) => searchText = newValue,
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              setState(() {});
-                            }
-                            return;
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return kEmailNullError;
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                              borderSide:
-                                  const BorderSide(color: kPrimaryColor),
-                            ),
-                            labelStyle: const TextStyle(color: kPrimaryColor),
-                            focusColor: kPrimaryColor,
-                            fillColor: kSecondaryColor,
-                            filled: true,
-                            hintText: "Search location here...",
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: const BoxDecoration(
-                            color: kPrimaryColor, // border color
-                            shape: BoxShape.circle,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(2), // border width
-                            child: Container(
-                              // or ClipRRect if you need to clip the content
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kPrimaryColor, // inner circle color
-                              ),
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.search,
-                                  color: Colors.white,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Expanded(
+                            child: TextFormField(
+                              key: Key(_address.toString()), // <- Magic!
+                              //initialValue: _address.toString(),
+
+                              initialValue:
+                                  _address.toString() == "UnKnown Location"
+                                      ? "Enter Adress"
+                                      : _address.toString(),
+                              maxLines: 3,
+                              style: const TextStyle(color: kTextColor),
+                              onSaved: (newValue) => searchText = newValue,
+                              onChanged: (value) {
+                                if (value.isNotEmpty &&
+                                    value != "UnKnown Location") {
+                                  setState(() {
+                                    _address = value;
+                                  });
+                                }
+                                return;
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty ||
+                                    value == ("Enter Adress")) {
+                                  return "Please enter your adress";
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  borderSide: BorderSide.none,
                                 ),
-                              ), // inner content
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                ),
+                                labelStyle:
+                                    const TextStyle(color: kPrimaryColor),
+                                focusColor: kPrimaryColor,
+                                fillColor: kFormColor,
+                                filled: true,
+                                hintText: _address,
+                                label: const Text("Address"),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-              DefaultButton(
-                press: () {
-                  // If user saves location, send user to Home
-                  // if (_formKey.currentState!.validate()) {
-
-                  //   Navigator.of(context).pushNamedAndRemoveUntil(
-                  //       HomeScreen.routeName, (route) => false);
-                  // }
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      HomeScreen.routeName, (route) => false);
+            ]),
+          ),
+        ),
+        Expanded(
+          child: Stack(
+            children: <Widget>[
+              GoogleMap(
+                mapType: MapType.normal,
+                markers: {
+                  Marker(
+                      markerId: const MarkerId("Source"),
+                      position: currentPostion),
                 },
-                text: ("Save"),
+                initialCameraPosition: CameraPosition(
+                  target: currentPostion,
+                  zoom: 14.0,
+                ),
+                onCameraMove: _onCameraMove,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(48.0, 0.0, 48.0, 48.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    DefaultButton(
+                      press: () {
+                        // If user saves location, send user to Home
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              HomeScreen.routeName, (route) => false);
+                        }
+                        // Navigator.of(context).pushNamedAndRemoveUntil(
+                        //     HomeScreen.routeName, (route) => false);
+                      },
+                      text: ("Save"),
+                    )
+                  ],
+                ),
               )
             ],
           ),
-        )
+        ),
       ],
     ));
   }

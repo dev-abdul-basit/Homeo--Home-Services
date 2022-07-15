@@ -24,6 +24,8 @@ class HomeScreen extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0.0, 16, 0, 0),
                 child: Text(
                   "Your address",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: TextStyle(color: Colors.white60, fontSize: 12),
                 ),
               ),
@@ -31,6 +33,8 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(0.0, 4, 0, 8),
                 child: Text(
                   "Albertstrabe 29,0....",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: headingStyleWhite,
                 ),
               ),
@@ -40,7 +44,24 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 16, 0, 0),
               child: IconButton(
-                icon: const Icon(Icons.notifications_active_outlined),
+                visualDensity:
+                    const VisualDensity(horizontal: -4.0, vertical: -4.0),
+                icon: const Icon(
+                  Icons.favorite_border,
+                  color: Colors.white,
+                ),
+                onPressed: () {},
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 16, 0, 0),
+              child: IconButton(
+                visualDensity:
+                    const VisualDensity(horizontal: -4.0, vertical: -4.0),
+                icon: const Icon(
+                  Icons.notifications_active_outlined,
+                  color: Colors.white,
+                ),
                 onPressed: () {},
               ),
             ),
@@ -50,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {},
                 child: const CircleAvatar(
                   radius: 18.0,
-                  backgroundImage: AssetImage("assets/images/cleaner_2.png"),
+                  backgroundImage: AssetImage("assets/images/user.png"),
                   backgroundColor: Colors.transparent,
                 ),
               ),

@@ -12,6 +12,7 @@ class MapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+      backgroundColor: kFormColor,
       appBar: AppBar(
         backgroundColor: kPrimaryBGColor,
         title: const Text(

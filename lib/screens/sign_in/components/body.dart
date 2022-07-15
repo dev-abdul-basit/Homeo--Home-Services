@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:handyman/constants.dart';
 
 import '../../../components/no_account_txt.dart';
-import '../../../components/social_card.dart';
+
 import '../../../size_config.dart';
 import '../../sign_up/sign_up_screen.dart';
 import 'sign_form.dart';

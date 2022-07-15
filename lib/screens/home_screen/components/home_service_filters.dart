@@ -15,24 +15,25 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
     'Cleaning',
     'Plumbing',
     'Appliances',
-    'Spa & Saloon'
+    'Laundary'
   ];
+
   final List<bool> _selected = [true, false, false, false, false];
   Widget _buildChips() {
     List<Widget> chips = [];
 
     for (int i = 0; i < _options.length; i++) {
-      FilterChip filterChip = FilterChip(
+      ChoiceChip filterChip = ChoiceChip(
         selected: _selected[i],
         label: Text(_options[i], style: const TextStyle(color: Colors.white)),
         elevation: 2,
-        showCheckmark: false,
         selectedColor: kPrimaryLightColor,
         backgroundColor: kTextColorSecondary,
         onSelected: (bool selected) {
           setState(() {
             _selected[i] = selected;
             print(_options[i].toString());
+            print(_selected[i].toString());
           });
         },
       );

@@ -13,14 +13,14 @@ class _HomeServiceListState extends State<HomeServiceList> {
   final ScrollController _controller = ScrollController();
   final List<String> _listImages = [
     "assets/images/cleaner_2.png",
+    "assets/images/repair_man.jpg",
+    "assets/images/wall_painting.jpg",
     "assets/images/cleaner_2.png",
+    "assets/images/repair_man.jpg",
+    "assets/images/wall_painting.jpg",
     "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
+    "assets/images/repair_man.jpg",
+    "assets/images/wall_painting.jpg",
   ];
   bool _favourite = true;
   @override
@@ -61,7 +61,7 @@ class _HomeServiceListState extends State<HomeServiceList> {
                           child: Image(
                             width: 96,
                             height: 96,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             image: AssetImage(
                               _listImages[index],
                             ),

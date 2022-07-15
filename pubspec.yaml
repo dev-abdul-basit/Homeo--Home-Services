@@ -45,6 +45,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   intl: ^0.17.0
   date_format: ^2.0.6
+  geocoding: ^2.0.4
+
 
 dev_dependencies:
   flutter_test:

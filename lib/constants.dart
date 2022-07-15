@@ -3,13 +3,16 @@ import 'size_config.dart';
 
 //const kPrimaryBGColor = Color(0xFFF5F5F5);
 const kPrimaryBGColor = Color(0xFFFFFCFC);
-const kPrimaryColor = Color(0xFFF54242);
-const kPrimaryLightColor = Color(0xFFFF6D75);
+const kPrimaryColor = Color.fromARGB(255, 118, 32, 238);
+const kPrimaryLightColor = Color.fromARGB(255, 170, 113, 250);
 const kFormColor = Color(0xFFF6F6F6);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,
-  colors: [Color(0xFFFF6D75), Color(0xFFF54242)],
+  colors: [
+    Color.fromARGB(255, 118, 32, 238),
+    Color.fromARGB(255, 170, 113, 250)
+  ],
 );
 const kSecondaryColor = Color(0xFFFFFFFF);
 const kTextColor = Color(0xFF000000);

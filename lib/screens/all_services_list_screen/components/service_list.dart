@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import '../../../constants.dart';
 import '../../service_detail_screen/service_detail_screen.dart';
@@ -62,6 +63,7 @@ class _ServiceListState extends State<ServiceList> {
                           child: Image(
                             width: 96,
                             height: 96,
+                            fit: BoxFit.cover,
                             image: AssetImage(
                               _listImages[index],
                             ),

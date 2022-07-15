@@ -12,14 +12,14 @@ class HomeServices extends StatefulWidget {
 
 class _HomeServicesState extends State<HomeServices> {
   List<Map<String, String>> servicesData = [
-    {"text": "Cleaning", "icon": "assets/images/burger.png"},
-    {"text": "Repairing", "icon": "assets/images/pizza.png"},
-    {"text": "Painting", "icon": "assets/images/italian.png"},
-    {"text": "Laundary", "icon": "assets/images/chinese.png"},
-    {"text": "Appliances", "icon": "assets/images/indian.png"},
-    {"text": "Plumbing", "icon": "assets/images/pizza.png"},
-    {"text": "Parlour", "icon": "assets/images/burger.png"},
-    {"text": "More", "icon": "assets/images/review.png"},
+    {"text": "Cleaning", "icon": "assets/icons/cleaning.png"},
+    {"text": "Carpenter", "icon": "assets/icons/carpenter.png"},
+    {"text": "Laundry", "icon": "assets/icons/laundry.png"},
+    {"text": "Painting", "icon": "assets/icons/painting.png"},
+    {"text": "Electrician", "icon": "assets/icons/electrician.png"},
+    {"text": "Plumbing", "icon": "assets/icons/plumbing.png"},
+    {"text": "Parlour", "icon": "assets/icons/salon.png"},
+    {"text": "Car Wash", "icon": "assets/icons/car_wash.png"},
   ];
   final ScrollController _controller = ScrollController();
 

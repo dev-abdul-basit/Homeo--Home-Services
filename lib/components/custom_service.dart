@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:handyman/constants.dart';
 
 class CustomService extends StatelessWidget {
@@ -17,28 +18,35 @@ class CustomService extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: kTextColorSecondary.withOpacity(0.2),
-            ),
-            child: Image(
-              width: 48,
-              height: 48,
-              image: AssetImage(icon),
+          Expanded(
+            child: Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: kTextColorSecondary.withOpacity(0.1),
+              ),
+              child: Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(icon),
+              )),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-                color: kTextColorSecondary,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 0),
+              child: Text(
+                text,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: kTextColor,
+                    overflow: TextOverflow.ellipsis),
               ),
             ),
           ),

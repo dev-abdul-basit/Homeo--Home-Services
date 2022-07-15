@@ -13,8 +13,8 @@ class _ServiceImageHeaderState extends State<ServiceImageHeader> {
   int currentPage = 0;
   final List<String> _listImages = [
     "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
-    "assets/images/cleaner_2.png",
+    "assets/images/wall_painting.jpg",
+    "assets/images/repair_man.jpg",
     "assets/images/cleaner_2.png",
   ];
 
