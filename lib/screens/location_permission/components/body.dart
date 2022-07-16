@@ -70,7 +70,7 @@ class _BodyState extends State<Body> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(48.0, 24, 48, 24),
+              padding: const EdgeInsets.fromLTRB(48.0, 8, 48, 8),
               child: OutlinedButton(
                 child: const Text(
                   "Allow while using app",
