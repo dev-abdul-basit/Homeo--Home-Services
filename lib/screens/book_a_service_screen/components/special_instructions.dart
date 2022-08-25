@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:handyman/components/default_button.dart';
-import 'package:handyman/screens/booking_summary/booking_summary.dart';
+import 'package:handyman/helper/global_config.dart';
 
 import '../../../constants.dart';
+import '../../../size_config.dart';
+import '../../booking_summary/booking_summary.dart';
 
 class SpecialInstructions extends StatefulWidget {
   const SpecialInstructions({Key? key}) : super(key: key);
@@ -12,7 +13,15 @@ class SpecialInstructions extends StatefulWidget {
 }
 
 class _SpecialInstructionsState extends State<SpecialInstructions> {
-  String? specialInstructions;
+  String specialInstructions = 'empty';
+  TextEditingController controller = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    box!.put('instructions', specialInstructions);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,15 +43,6 @@ class _SpecialInstructionsState extends State<SpecialInstructions> {
             padding: const EdgeInsets.all(18.0),
             child: buildSpecialInstructionsFormField(),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24.0, 28, 24, 8),
-            child: DefaultButton(
-              press: () {
-                Navigator.pushNamed(context, BookingSummary.routeName);
-              },
-              text: "Continue",
-            ),
-          )
         ],
       ),
     );
@@ -51,6 +51,7 @@ class _SpecialInstructionsState extends State<SpecialInstructions> {
   TextFormField buildSpecialInstructionsFormField() {
     return TextFormField(
       maxLines: 4,
+      controller: controller,
       cursorColor: kPrimaryColor,
       keyboardType: TextInputType.streetAddress,
       onSaved: (newValue) => specialInstructions = newValue!,
@@ -59,6 +60,12 @@ class _SpecialInstructionsState extends State<SpecialInstructions> {
           return "Enter Your instructions";
         }
         return null;
+      },
+      onChanged: (value) {
+        specialInstructions = value;
+        setState(() {
+          box!.put('instructions', specialInstructions);
+        });
       },
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(

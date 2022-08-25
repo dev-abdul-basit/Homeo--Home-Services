@@ -8,8 +8,11 @@ class ServicesListScreen extends StatefulWidget {
   const ServicesListScreen({
     Key? key,
     required this.serviceName,
+    required this.sub_cat,
+    required this.service_title,
+    required this.id,
   }) : super(key: key);
-  final String serviceName;
+  final String serviceName, sub_cat, service_title, id;
 
   @override
   State<ServicesListScreen> createState() => _ServicesListScreenState();
@@ -23,11 +26,16 @@ class _ServicesListScreenState extends State<ServicesListScreen> {
         elevation: 2,
         centerTitle: false,
         title: Text(
-          widget.serviceName,
+          widget.serviceName == 'Empty' ? 'Services' : widget.serviceName,
           style: const TextStyle(color: kTextColor),
         ),
       ),
-      body: const Body(),
+      body: Body(
+        service_name: widget.serviceName,
+        sub_cat: widget.sub_cat,
+        service_title: widget.service_title,
+        id: widget.id,
+      ),
     );
   }
 }

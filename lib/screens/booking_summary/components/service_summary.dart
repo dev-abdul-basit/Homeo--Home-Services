@@ -1,10 +1,45 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../helper/global_config.dart';
 
-class ServiceSummary extends StatelessWidget {
-  const ServiceSummary({Key? key}) : super(key: key);
+class ServiceSummary extends StatefulWidget {
+  const ServiceSummary({
+    Key? key,
+    required this.title,
+    required this.id,
+    required this.speciality,
+    required this.description,
+    required this.note,
+    required this.adress,
+    required this.rate,
+    required this.status,
+    required this.spName,
+    required this.spId,
+    required this.serviceImages,
+    required this.serviceImages1,
+    required this.serviceImages2,
+  }) : super(key: key);
 
+  final String title,
+      speciality,
+      id,
+      description,
+      note,
+      adress,
+      rate,
+      status,
+      spName,
+      spId,
+      serviceImages,
+      serviceImages1,
+      serviceImages2;
+
+  @override
+  State<ServiceSummary> createState() => _ServiceSummaryState();
+}
+
+class _ServiceSummaryState extends State<ServiceSummary> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -19,63 +54,49 @@ class ServiceSummary extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                SizedBox(
-                  height: 8,
-                ),
+              children: <Widget>[
+                const SizedBox(height: 8),
                 Text(
-                  "Service Name",
-                  style: TextStyle(
+                  "Service: " + widget.title,
+                  style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Colors.black87),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Text(
-                  "Date: 24/07/2022",
-                  style: TextStyle(
+                  "Date: " + box!.get('b_date'),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       color: Colors.black87),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Text(
-                  "Time: 11:00 AM",
-                  style: TextStyle(
+                  "Time: " + box!.get('b_time'),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       color: Colors.black87),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Text(
-                  "Total Hours: 06 hrs",
-                  style: TextStyle(
+                  "Total Hours: " + box!.get('hours').toString(),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       color: Colors.black87),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
-                SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Text(
-                  "Total Price : 5000",
-                  style: TextStyle(
+                  "Total Price: " +
+                      (int.parse(widget.rate) * box!.get('hours')).toString(),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: kPrimaryLightColor),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
               ]),
         ),
       ),

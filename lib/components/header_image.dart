@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class ServiceImageHeader extends StatefulWidget {
-  const ServiceImageHeader({Key? key}) : super(key: key);
+  const ServiceImageHeader({Key? key, required this.listImages})
+      : super(key: key);
+  final List<String> listImages;
 
   @override
   State<ServiceImageHeader> createState() => _ServiceImageHeaderState();
@@ -37,7 +39,7 @@ class _ServiceImageHeaderState extends State<ServiceImageHeader> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(_listImages[index]),
+                          image: NetworkImage(widget.listImages[index]),
                           fit: BoxFit.cover),
                       borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(24),
@@ -52,7 +54,7 @@ class _ServiceImageHeaderState extends State<ServiceImageHeader> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              _listImages.length,
+              widget.listImages.length,
               (index) => buildDot(index: index),
             ),
           ),

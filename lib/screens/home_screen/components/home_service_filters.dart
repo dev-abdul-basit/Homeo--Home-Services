@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:handyman/constants.dart';
@@ -19,35 +21,12 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
   ];
 
   final List<bool> _selected = [true, false, false, false, false];
-  Widget _buildChips() {
-    List<Widget> chips = [];
 
-    for (int i = 0; i < _options.length; i++) {
-      ChoiceChip filterChip = ChoiceChip(
-        selected: _selected[i],
-        label: Text(_options[i], style: const TextStyle(color: Colors.white)),
-        elevation: 2,
-        selectedColor: kPrimaryLightColor,
-        backgroundColor: kTextColorSecondary,
-        onSelected: (bool selected) {
-          setState(() {
-            _selected[i] = selected;
-            print(_options[i].toString());
-            print(_selected[i].toString());
-          });
-        },
-      );
-
-      chips.add(Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: filterChip));
-    }
-
-    return ListView(
-      // This next line does the trick.
-      scrollDirection: Axis.horizontal,
-      children: chips,
-    );
+  int? tappedIndex;
+  @override
+  void initState() {
+    super.initState();
+    tappedIndex = 0;
   }
 
   @override
@@ -56,7 +35,69 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
       height: 48,
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, top: 12),
-        child: _buildChips(),
+        child: ListView.builder(
+            itemCount: 5,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: FilterButton(
+                  text: _options[index],
+                  selected: _selected[index],
+                  selectedColor: tappedIndex == index
+                      ? kPrimaryColor
+                      : kTextColorSecondary,
+                  press: () {
+                    setState(() {
+                      tappedIndex = index;
+
+                      print(index);
+                    });
+                  },
+                ),
+              );
+            }),
+      ),
+    );
+  }
+}
+
+class FilterButton extends StatelessWidget {
+  const FilterButton({
+    Key? key,
+    required this.text,
+    required this.press,
+    required this.selected,
+    required this.selectedColor,
+  }) : super(key: key);
+  final String text;
+  final Function press;
+  final bool selected;
+  final Color selectedColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 36,
+      child: ElevatedButton(
+        onPressed: () {
+          press();
+        },
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+          primary: selectedColor,
+          onPrimary: kSecondaryColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:handyman/constants.dart';
+import 'package:handyman/helper/global_config.dart';
 import 'package:handyman/screens/map_location/map_location_screen.dart';
 import '../../../../components/default_button.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -123,6 +124,7 @@ class _BodyState extends State<Body> {
   Future _checkForPermissions() async {
     final PermissionStatus permissionStatus = await _getPermission();
     if (permissionStatus == PermissionStatus.granted) {
+      box!.put('permissions', 'true');
       Navigator.pushNamed(context, MapScreen.routeName);
     } else if (permissionStatus == PermissionStatus.denied) {
       //If permissions have been denied show standard cupertino alert dialog

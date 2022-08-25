@@ -56,37 +56,31 @@ class Body extends StatelessWidget {
                           elevation: 8.0,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Create a New Account",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: kTextColor,
-                                        fontSize:
-                                            getProportionateScreenWidth(20),
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            child: ListView(shrinkWrap: true,
+                                // crossAxisAlignment: CrossAxisAlignment.stretch,
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Create a New Account",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: kTextColor,
+                                      fontSize: getProportionateScreenWidth(20),
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(
-                                      "Sign Up to create a new account.",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: kTextColorSecondary,
-                                        fontSize:
-                                            getProportionateScreenWidth(14),
-                                      ),
+                                  ),
+                                  Text(
+                                    "Sign Up to create a new account.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: kTextColorSecondary,
+                                      fontSize: getProportionateScreenWidth(14),
                                     ),
-                                    SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(4)),
-                                    const SignUpForm(),
-                                  ]),
-                            ),
+                                  ),
+                                  SizedBox(
+                                      height: getProportionateScreenHeight(4)),
+                                  const SignUpForm(),
+                                ]),
                           ),
                         ),
                       ),

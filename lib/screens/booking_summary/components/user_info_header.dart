@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:handyman/constants.dart';
 
+import '../../../helper/global_config.dart';
+
 class UserInfoHeader extends StatelessWidget {
   const UserInfoHeader({Key? key}) : super(key: key);
 
@@ -18,48 +20,48 @@ class UserInfoHeader extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                SizedBox(
+              children: <Widget>[
+                const SizedBox(
                   height: 8,
                 ),
                 Text(
-                  "Your Name",
-                  style: TextStyle(
+                  box!.get('name'),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       color: Colors.black54),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Text(
-                  "0343054546465",
-                  style: TextStyle(
+                  box!.get('mobile'),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       color: Colors.black54),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Text(
-                  "example@gmail.com",
-                  style: TextStyle(
+                  box!.get('email'),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       color: Colors.black54),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Text(
-                  "Adress, house number, street, City, PK",
-                  style: TextStyle(
+                  box!.get('adress'),
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       color: Colors.black54),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
               ]),

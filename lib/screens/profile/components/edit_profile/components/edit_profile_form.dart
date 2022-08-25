@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:handyman/helper/global_config.dart';
 
 import '../../../../../components/default_button.dart';
 import '../../../../../constants.dart';
+
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import '../../../../../helper/keyboard.dart';
+
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
+import 'package:image_picker/image_picker.dart';
+
+import 'dart:async';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:async';
+
+import 'package:http/http.dart' as http;
+
+import '../../../../../size_config.dart';
 
 enum Gender { male, female }
 
@@ -21,12 +41,80 @@ class _EditProfileFormState extends State<EditProfileForm> {
   String? country;
   String? firstName;
   String? lastName;
-  String? dateofbirth;
+  String? mobile;
   String? about;
-
+  String? gender;
+  String imageUrl = 'Empty';
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+  String? fileName;
   // The inital gender value
   Gender _selectedGender = Gender.male;
 
+  bool? error, sending, success;
+  String? msg;
+  String webUrl = baseUrl + "flutterfyp/UpdateProfile.php";
+  //Camera Method
+  Future openCamera() async {
+    Navigator.of(context).pop();
+    var imageFrmCamera = await _picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _selectedImage = File(imageFrmCamera!.path);
+    });
+    //if (mounted) Navigator.of(context).pop();
+  }
+
+  //Gallery method
+  Future openGallery() async {
+    Navigator.of(context).pop();
+    var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _selectedImage = File(pickedFile!.path);
+      fileName = _selectedImage!.path.split('/').last;
+      print(fileName);
+      uploadImageToFirebase(_selectedImage!, fileName!);
+    });
+    // if (mounted) Navigator.of(context).pop();
+  }
+
+  final Reference _storageReference =
+      FirebaseStorage.instance.ref().child("contact_images");
+
+  void uploadImageToFirebase(File file, String fileName) async {
+    // Create the file metadata
+    //final metadata = SettableMetadata(contentType: "image/jpeg");
+
+    file.absolute.existsSync();
+    //upload
+    _storageReference.child(fileName).putFile(file).then((firebaseFile) async {
+      var downloadUrl = await firebaseFile.ref.getDownloadURL();
+
+      setState(() {
+        imageUrl = downloadUrl;
+        print("downloadUrl");
+        print(downloadUrl);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    error = false;
+    sending = false;
+    success = false;
+    gender = _selectedGender.name.toString();
+    msg = "";
+    profileImage = box!.get('uimage');
+  }
+
+  TextEditingController emailctrl =
+      TextEditingController(text: box!.get('email'));
+  TextEditingController mobilectrl =
+      TextEditingController(text: box!.get('mobile'));
+  TextEditingController nameectrl =
+      TextEditingController(text: box!.get('name'));
+  String? profileImage;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,6 +132,53 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        Center(
+                          child: Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 50.0,
+                                backgroundColor: Colors.white,
+                                child: imageUrl == 'Empty'
+                                    ? CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 48.0,
+                                        backgroundImage:
+                                            NetworkImage(profileImage!),
+                                      )
+                                    : Image.network(
+                                        imageUrl,
+                                        fit: BoxFit.cover,
+                                        width: 50,
+                                        height: 50,
+                                      ),
+                              ),
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(7.5),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 2, color: Colors.white),
+                                      borderRadius: BorderRadius.circular(48.0),
+                                      color: kPrimaryColor),
+                                  child: InkWell(
+                                    onTap: () {
+                                      _optionsDialogBox();
+                                    },
+                                    child: const Icon(
+                                      Icons.linked_camera,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: getProportionateScreenHeight(6)),
+
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +192,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "First Name",
+                                        "Name",
                                         style: secondaryTextStyle12,
                                       ),
                                     ),
@@ -66,24 +201,24 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 ),
                               ),
                             ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Last Name",
-                                        style: secondaryTextStyle12,
-                                      ),
-                                    ),
-                                    buildLastNameFormField(),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            // Expanded(
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.all(8.0),
+                            //     child: Column(
+                            //       crossAxisAlignment: CrossAxisAlignment.start,
+                            //       children: [
+                            //         Padding(
+                            //           padding: const EdgeInsets.all(8.0),
+                            //           child: Text(
+                            //             "Last Name",
+                            //             style: secondaryTextStyle12,
+                            //           ),
+                            //         ),
+                            //         buildLastNameFormField(),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                         Padding(
@@ -126,6 +261,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                       onChanged: (Gender? value) {
                                         setState(() {
                                           _selectedGender = value!;
+                                          gender = value.name.toString();
                                         });
                                       },
                                     ),
@@ -143,6 +279,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                       onChanged: (Gender? value) {
                                         setState(() {
                                           _selectedGender = value!;
+                                          gender = value.name.toString();
                                         });
                                       },
                                     ),
@@ -161,77 +298,77 @@ class _EditProfileFormState extends State<EditProfileForm> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "Date of birth",
+                                  "Mobile",
                                   style: secondaryTextStyle12,
                                 ),
                               ),
-                              buildDateOfBirthFormField(),
+                              buildUserMobileFormField(),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "City",
-                                          style: secondaryTextStyle12,
-                                        ),
-                                      ),
-                                      buildCityNameFormField(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "Country",
-                                          style: secondaryTextStyle12,
-                                        ),
-                                      ),
-                                      buildCountryNameFormField(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "About",
-                                  style: secondaryTextStyle12,
-                                ),
-                              ),
-                              buildAboutFormField(),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8),
+                        //   child: Row(
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Expanded(
+                        //         child: Padding(
+                        //           padding: const EdgeInsets.all(8.0),
+                        //           child: Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             children: [
+                        //               Padding(
+                        //                 padding: const EdgeInsets.all(8.0),
+                        //                 child: Text(
+                        //                   "City",
+                        //                   style: secondaryTextStyle12,
+                        //                 ),
+                        //               ),
+                        //               buildCityNameFormField(),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Expanded(
+                        //         child: Padding(
+                        //           padding: const EdgeInsets.all(8.0),
+                        //           child: Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             children: [
+                        //               Padding(
+                        //                 padding: const EdgeInsets.all(8.0),
+                        //                 child: Text(
+                        //                   "Country",
+                        //                   style: secondaryTextStyle12,
+                        //                 ),
+                        //               ),
+                        //               buildCountryNameFormField(),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Text(
+                        //           "About",
+                        //           style: secondaryTextStyle12,
+                        //         ),
+                        //       ),
+                        //       buildAboutFormField(),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -240,14 +377,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   padding: const EdgeInsets.fromLTRB(48.0, 24, 48, 24),
                   child: DefaultButton(
                     press: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        // if all are valid then go to success screen
-                        KeyboardUtil.hideKeyboard(context);
-                        debugPrint("Saved");
-                      }
+                      updateProfile();
                     },
-                    text: "Save",
+                    text: sending! ? "Please wait..." : "Save",
                   ),
                 )
               ],
@@ -260,6 +392,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
   TextFormField buildFirstNameFormField() {
     return TextFormField(
+      controller: nameectrl,
       enabled: widget.enable,
       cursorColor: kPrimaryColor,
       keyboardType: TextInputType.name,
@@ -289,7 +422,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
         ),
         labelStyle: const TextStyle(color: kPrimaryColor),
         focusColor: kPrimaryColor,
-        hintText: "First Name",
+        hintText: box!.get('name'),
         fillColor: kTextColorSecondary.withOpacity(0.2),
         filled: true,
       ),
@@ -334,15 +467,16 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  TextFormField buildDateOfBirthFormField() {
+  TextFormField buildUserMobileFormField() {
     return TextFormField(
+      controller: mobilectrl,
       enabled: widget.enable,
       cursorColor: kPrimaryColor,
       keyboardType: TextInputType.datetime,
-      onSaved: (newValue) => dateofbirth = newValue!,
+      onSaved: (newValue) => mobile = newValue!,
       validator: (value) {
         if (value!.isEmpty) {
-          return "Enter Date of Birth";
+          return "Enter Mobile";
         }
         return null;
       },
@@ -365,7 +499,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
         ),
         labelStyle: const TextStyle(color: kPrimaryColor),
         focusColor: kPrimaryColor,
-        hintText: "Date of Birth",
+        hintText: box!.get('mobile'),
         fillColor: kTextColorSecondary.withOpacity(0.2),
         filled: true,
       ),
@@ -488,6 +622,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: emailctrl,
       enabled: widget.enable,
       cursorColor: kPrimaryColor,
       keyboardType: TextInputType.emailAddress,
@@ -519,10 +654,129 @@ class _EditProfileFormState extends State<EditProfileForm> {
         ),
         labelStyle: const TextStyle(color: kPrimaryColor),
         focusColor: kPrimaryColor,
-        hintText: "email@gmail.com",
+        hintText: box!.get('email'),
         fillColor: kTextColorSecondary.withOpacity(0.2),
         filled: true,
       ),
+    );
+  }
+
+//functions
+  updateProfile() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        sending = true;
+      });
+      KeyboardUtil.hideKeyboard(context);
+
+      sendData();
+    }
+  }
+
+  Future<void> sendData() async {
+    var res = await http.post(Uri.parse(webUrl), body: {
+      "id": box!.get("id"),
+      "name": firstName,
+      "email": email,
+      "contact": mobile,
+      "gender": gender,
+      "uimage": imageUrl == 'Empty' ? box!.get('uimage') : imageUrl,
+    }); //sending post request with header data
+
+    if (res.statusCode == 200) {
+      print('response:');
+      print(res.body); //print raw response on console
+      var data = json.decode(res.body); //decoding json to array
+      if (data["success"] == 0) {
+        setState(() {
+          //refresh the UI when error is recieved from server
+          sending = false;
+          error = true;
+          msg = data["msg"]; //error message from server
+        });
+      } else {
+        //after write success, make fields empty
+
+        setState(() {
+          msg = "success sendign data.";
+          print(msg);
+          sending = false;
+          success = true;
+          print(data["msg"]);
+
+          // add data to hive
+
+          if (data["success"] == 1) {
+            box!.put("name", nameectrl.text);
+            box!.put("email", emailctrl.text);
+
+            box!.put("mobile", mobilectrl.text);
+            box!.put("gender", gender);
+            box!.put("gender", gender);
+            box!.put(
+                "uimage", imageUrl == 'Empty' ? box!.get('uimage') : imageUrl);
+          } else {
+            final snackBar = SnackBar(
+              content: Text(data["success"] == 0 ? data["msg"] : data["msg"]),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            print(data["msg"]);
+          }
+        });
+      }
+    } else {
+      //there is error
+      setState(() {
+        // print('_id:');
+        // print(box!.get("_id"));
+
+        error = true;
+        msg = "Error during sendign data.";
+        print(msg);
+        print(res.body);
+        sending = false;
+        //mark error and refresh UI with setState
+      });
+    }
+  }
+
+  Future<void> _optionsDialogBox() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Choose Your Method'),
+          backgroundColor: kFormColor,
+          contentPadding: const EdgeInsets.all(20.0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: const Text("Take a Picture"),
+                  onTap: openCamera,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                const Divider(
+                  color: Colors.white70,
+                  height: 1.0,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                GestureDetector(
+                  child: const Text("Open Gallery"),
+                  onTap: openGallery,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

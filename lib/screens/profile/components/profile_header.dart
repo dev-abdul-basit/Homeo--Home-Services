@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:handyman/constants.dart';
+import 'package:handyman/helper/global_config.dart';
 import 'package:handyman/screens/profile/components/edit_profile/edit_profile_screen.dart';
 
 class ProfileHeader extends StatefulWidget {
@@ -11,6 +12,14 @@ class ProfileHeader extends StatefulWidget {
 }
 
 class _ProfileHeaderState extends State<ProfileHeader> {
+  String? profileFrmHive;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    profileFrmHive = box!.get('uimage');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,22 +27,22 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       child: Center(
         child: Column(
           children: <Widget>[
-            const CircleAvatar(
+            CircleAvatar(
               radius: 50.0,
               backgroundColor: Colors.white,
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 48.0,
-                backgroundImage: AssetImage("assets/images/user.png"),
+                backgroundImage: NetworkImage(profileFrmHive!),
                 // backgroundImage: NetworkImage(data[index]['avatar_url']),
               ),
             ),
             Text(
-              "Masaryk",
+              box!.get('name'),
               style: headingStyle,
             ),
             Text(
-              "abc123@gmail.com",
+              box!.get('email'),
               style: secondaryTextStyle12,
             ),
             Padding(

@@ -5,10 +5,44 @@ import '../../constants.dart';
 import '../home_screen/homescreen.dart';
 import 'components/body.dart';
 
-class BookingSummary extends StatelessWidget {
+class BookingSummary extends StatefulWidget {
   static String routeName = "/booking_summary";
-  const BookingSummary({Key? key}) : super(key: key);
+  const BookingSummary({
+    Key? key,
+    required this.title,
+    required this.id,
+    required this.speciality,
+    required this.description,
+    required this.note,
+    required this.adress,
+    required this.rate,
+    required this.status,
+    required this.spName,
+    required this.spId,
+    required this.serviceImages,
+    required this.serviceImages1,
+    required this.serviceImages2,
+  }) : super(key: key);
 
+  final String title,
+      speciality,
+      id,
+      description,
+      note,
+      adress,
+      rate,
+      status,
+      spName,
+      spId,
+      serviceImages,
+      serviceImages1,
+      serviceImages2;
+
+  @override
+  State<BookingSummary> createState() => _BookingSummaryState();
+}
+
+class _BookingSummaryState extends State<BookingSummary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,15 +54,20 @@ class BookingSummary extends StatelessWidget {
           style: TextStyle(color: kTextColor),
         ),
       ),
-      body: const Body(),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(28.0, 8, 28, 28),
-        child: DefaultButton(
-          press: () {
-            showConfirmationScreen(context);
-          },
-          text: "Cofirm & Book",
-        ),
+      body: Body(
+        id: widget.id,
+        title: widget.title,
+        speciality: widget.speciality,
+        description: widget.description,
+        note: widget.note,
+        adress: widget.adress,
+        rate: widget.rate,
+        status: widget.status,
+        spName: widget.spName,
+        spId: widget.spId,
+        serviceImages: widget.serviceImages,
+        serviceImages1: widget.serviceImages1,
+        serviceImages2: widget.serviceImages,
       ),
     );
   }

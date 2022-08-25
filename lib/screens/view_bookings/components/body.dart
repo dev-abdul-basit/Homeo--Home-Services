@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:handyman/screens/view_bookings/components/tab_completed_bookings.dart';
+import 'package:handyman/screens/view_bookings/components/tab_pending_offers.dart';
 
 import 'tab_active_bookings.dart';
 
@@ -15,6 +16,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return const TabBarView(
       children: <Widget>[
+        TabPendingOffers(),
         ActiveBookings(),
         CompletedBookings(),
       ],

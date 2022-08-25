@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:handyman/screens/all_services_list_screen/all_services_list_screen.dart';
 
 import '../../../components/custom_service.dart';
+import '../../../helper/global_config.dart';
+import '../../services_sub_categories/services_sub_categories.dart';
+import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -26,47 +30,75 @@ class _BodyState extends State<Body> {
   ];
   final ScrollController _controller = ScrollController();
 
+  final String url = baseUrlProvider + "admin_get_all_cat.php";
+
+  late List data;
+
+  var isLoading = false;
+  Future getAllCategories() async {
+    print('\nAll Cat\n');
+    var response = await http.post(Uri.parse(url), headers: {
+      "Accept": "application/json"
+    }, body: {
+      "cat_status": 'true',
+    });
+
+    print(response.body);
+    setState(() {
+      var convertDataToJson = json.decode(response.body)['result'];
+      data = convertDataToJson;
+      isLoading = true;
+      print(data);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getAllCategories();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 16, 8, 8),
-      child: GridView.builder(
-          controller: _controller,
-          itemCount: servicesData.length,
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(8.0),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-            crossAxisSpacing: 5.0,
-            mainAxisSpacing: 5.0,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: const EdgeInsets.all(8),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ServicesListScreen(
-                            serviceName: servicesData[index]['text']!),
-                      ));
-                },
-                child: CustomService(
-                  icon: servicesData[index]['icon']!,
-                  text: servicesData[index]['text']!,
-                ),
+    return Builder(
+      builder: (context) {
+        if (isLoading == true) {
+          return GridView.builder(
+              controller: _controller,
+              itemCount: data.length,
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(8.0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                childAspectRatio: 1.0,
+                crossAxisSpacing: 0.0,
+                mainAxisSpacing: 5.0,
               ),
-            );
-          }),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ServicesSubCategories(
+                            serviceName: data[index]['cat_title'] ?? '',
+                            sub1: data[index]['sub1'] ?? '',
+                            sub2: data[index]['sub2'] ?? '',
+                            sub3: data[index]['sub3'] ?? '',
+                            sub4: data[index]['sub4'] ?? '',
+                            sub5: data[index]['sub5'] ?? '',
+                          ),
+                        ));
+                  },
+                  child: CustomService(
+                    icon: data[index]['cat_image'],
+                    text: data[index]['cat_title'],
+                  ),
+                );
+              });
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }

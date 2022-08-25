@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:handyman/constants.dart';
+
+import '../../../helper/global_config.dart';
 
 class WorkingHoursContianer extends StatefulWidget {
   const WorkingHoursContianer({Key? key}) : super(key: key);
@@ -14,13 +18,22 @@ class _WorkingHoursContianerState extends State<WorkingHoursContianer> {
   void _increment() {
     setState(() {
       _counter++;
+      box!.put('hours', _counter);
     });
   }
 
   void _decrement() {
     setState(() {
       _counter--;
+      box!.put('hours', _counter);
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    box!.put('hours', _counter);
   }
 
   @override

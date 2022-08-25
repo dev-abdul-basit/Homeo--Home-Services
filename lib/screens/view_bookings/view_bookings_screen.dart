@@ -12,7 +12,7 @@ class ViewAllBookingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           elevation: 2,
@@ -26,6 +26,7 @@ class ViewAllBookingsScreen extends StatelessWidget {
               unselectedLabelColor: kTextColorSecondary,
               indicatorColor: kPrimaryColor,
               tabs: [
+                Tab(text: 'Pending'),
                 Tab(text: 'Active'),
                 Tab(text: 'Completed'),
               ]),

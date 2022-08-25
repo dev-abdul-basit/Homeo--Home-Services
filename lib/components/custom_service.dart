@@ -30,9 +30,12 @@ class CustomService extends StatelessWidget {
               ),
               child: Center(
                   child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(icon),
-              )),
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 30.0,
+                        backgroundImage: NetworkImage(icon),
+                        backgroundColor: Colors.transparent,
+                      ))),
             ),
           ),
           Expanded(

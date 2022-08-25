@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "188819626286",
+    "firebase_url": "https://flutterlco-53a7b-default-rtdb.firebaseio.com",
+    "project_id": "flutterlco-53a7b",
+    "storage_bucket": "flutterlco-53a7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188819626286:android:4c0be6b6813cc7c89142bf",
+        "android_client_info": {
+          "package_name": "com.example.firebaselogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188819626286-2qh5elspe3ulhpup02ll392g4mpcnsdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzUtUsRm1xtwWVpkalKCHHSnyuLQPjg2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188819626286-2qh5elspe3ulhpup02ll392g4mpcnsdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188819626286:android:213e7959e82516269142bf",
+        "android_client_info": {
+          "package_name": "com.example.handyman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188819626286-2qh5elspe3ulhpup02ll392g4mpcnsdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzUtUsRm1xtwWVpkalKCHHSnyuLQPjg2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188819626286-2qh5elspe3ulhpup02ll392g4mpcnsdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188819626286:android:e29377645a8ab8b59142bf",
+        "android_client_info": {
+          "package_name": "com.example.handyprovider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188819626286-2qh5elspe3ulhpup02ll392g4mpcnsdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzUtUsRm1xtwWVpkalKCHHSnyuLQPjg2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188819626286-2qh5elspe3ulhpup02ll392g4mpcnsdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
