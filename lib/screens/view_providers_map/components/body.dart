@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:handyman/components/default_button.dart';
 import 'package:handyman/screens/all_services_list_screen/all_services_list_screen.dart';
 import '../../../constants.dart';
-import '../../../helper/global_config.dart';
-import '../../../helper/keyboard.dart';
-import '../../home_screen/homescreen.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:workmanager/workmanager.dart';
-import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);

@@ -69,38 +69,38 @@ class _SignFormState extends State<SignForm> {
       child: Column(
         children: [
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(12)),
+          SizedBox(height: getProportionateScreenHeight(8)),
           buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(0)),
-          Row(
-            children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value!;
-                  });
-                },
-              ),
-              const Text(
-                "Remember me",
-                style: TextStyle(fontSize: 12, color: kTextColorSecondary),
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
-                child: const Text(
-                  "Forgot Password",
-                  style: TextStyle(
-                      decoration: TextDecoration.none,
-                      fontSize: 12,
-                      color: kPrimaryColor),
-                ),
-              )
-            ],
-          ),
+          SizedBox(height: getProportionateScreenHeight(12)),
+          // Row(
+          //   children: [
+          //     Checkbox(
+          //       value: remember,
+          //       activeColor: kPrimaryColor,
+          //       onChanged: (value) {
+          //         setState(() {
+          //           remember = value!;
+          //         });
+          //       },
+          //     ),
+          //     const Text(
+          //       "Remember me",
+          //       style: TextStyle(fontSize: 12, color: kTextColorSecondary),
+          //     ),
+          //     Spacer(),
+          //     GestureDetector(
+          //       onTap: () => Navigator.pushNamed(
+          //           context, ForgotPasswordScreen.routeName),
+          //       child: const Text(
+          //         "Forgot Password",
+          //         style: TextStyle(
+          //             decoration: TextDecoration.none,
+          //             fontSize: 12,
+          //             color: kPrimaryColor),
+          //       ),
+          //     )
+          //   ],
+          // ),
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           Padding(
@@ -171,7 +171,7 @@ class _SignFormState extends State<SignForm> {
             print("All done");
             print(data["id"]);
             print(data["token"]);
-            box!.put("login", "true");
+            box!.put("login", true);
             box!.put("id", data["id"]);
             box!.put("name", data["name"]);
             box!.put("email", data["email"]);

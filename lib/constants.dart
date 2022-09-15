@@ -26,6 +26,7 @@ final headingStyle = TextStyle(
   color: Colors.black,
   height: 1.5,
 );
+
 final headingStyleWhite = TextStyle(
   fontSize: getProportionateScreenWidth(20),
   fontWeight: FontWeight.bold,

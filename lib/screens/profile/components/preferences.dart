@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:handyman/helper/global_config.dart';
+import 'package:handyman/screens/choose_account/choose_acount.dart';
 import 'package:handyman/screens/sign_in/sign_in_screen.dart';
+import 'package:hive/hive.dart';
 
 import '../../../components/custom_logout_dialog.dart';
 import '../../../constants.dart';
@@ -63,10 +65,12 @@ class _ProfilePreferencesState extends State<ProfilePreferences> {
                     // Navigator.of(context).pop();
 
                     return CustomLogoutDialog(
-                      press: () {
+                      press: () async {
                         box!.delete("login");
+                        await Hive.box('easyLogin').clear();
+
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                            SignInScreen.routeName, (route) => false);
+                            ChooseAccount.routeName, (route) => false);
                         //  Navigator.of(context).pop();
                       },
                       close: () {

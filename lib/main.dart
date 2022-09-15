@@ -10,28 +10,20 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:handyman/components/default_button.dart';
-import '../../../constants.dart';
-import '../../../helper/global_config.dart';
-import '../../../helper/keyboard.dart';
+//
 
-import 'package:geocoding/geocoding.dart';
-import 'package:workmanager/workmanager.dart';
+import '../../../helper/global_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  Workmanager().initialize(
-      callbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode:
-          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-      );
-  Workmanager().registerOneOffTask("task-identifier", "simpleTask");
+  // Workmanager().initialize(
+  //     callbackDispatcher, // The top level function, aka callbackDispatcher
+  //     isInDebugMode:
+  //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  //     );
+  // Workmanager().registerOneOffTask("task-identifier", "simpleTask");
   Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
   Hive.init(documentsDirectory.path);
@@ -45,24 +37,24 @@ void main() async {
 }
 
 ///////////////////////////
-const fetchBackground = "fetchBackground";
+// const fetchBackground = "fetchBackground";
 
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    switch (task) {
-      case fetchBackground:
-        Position _position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-        );
-        print("\n---Workmanager Lat long---:\n");
-        print("\n$fetchBackground\n");
-        print(_position.toString());
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) async {
+//     switch (task) {
+//       case fetchBackground:
+//         Position _position = await Geolocator.getCurrentPosition(
+//           desiredAccuracy: LocationAccuracy.high,
+//         );
+//         print("\n---Workmanager Lat long---:\n");
+//         print("\n$fetchBackground\n");
+//         print(_position.toString());
 
-        break;
-    }
-    return Future.value(true);
-  });
-}
+//         break;
+//     }
+//     return Future.value(true);
+//   });
+// }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -77,11 +69,11 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
 
-    Workmanager().registerPeriodicTask(
-      "1",
-      fetchBackground,
-      frequency: const Duration(seconds: 5000),
-    );
+    // Workmanager().registerPeriodicTask(
+    //   "1",
+    //   fetchBackground,
+    //   frequency: const Duration(seconds: 5000),
+    // );
   }
 
   @override

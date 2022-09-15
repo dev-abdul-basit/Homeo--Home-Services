@@ -2,9 +2,21 @@ import 'package:flutter/widgets.dart';
 import 'package:handyman/screens/all_services_list_screen/all_services_list_screen.dart';
 import 'package:handyman/screens/book_a_service_screen/booking_service_screen.dart';
 import 'package:handyman/screens/booking_summary/booking_summary.dart';
+import 'package:handyman/screens/choose_account/choose_acount.dart';
 import 'package:handyman/screens/favourite_services/favourite_screen.dart';
 
 import 'package:handyman/screens/offers_detail/offers_detail_screen.dart';
+import 'package:handyman/screens/provider/screens/add_new_service/components/add_service_images/provider_add_service_images.dart';
+import 'package:handyman/screens/provider/screens/add_new_service/provider_add_new_service_screen.dart';
+import 'package:handyman/screens/provider/screens/home_screen/provider_homescreen.dart';
+import 'package:handyman/screens/provider/screens/offers_detail/provider_offers_detail_screen.dart';
+import 'package:handyman/screens/provider/screens/profile/provider_profile_screen.dart';
+import 'package:handyman/screens/provider/screens/sign_in/provider_sign_in_screen.dart';
+import 'package:handyman/screens/provider/screens/sign_up/choose_tracking_id/provider_choose_tracking_id_screen.dart';
+import 'package:handyman/screens/provider/screens/sign_up/provider_sign_up_screen.dart';
+import 'package:handyman/screens/provider/screens/view_offers/provider_view_offers_screen.dart';
+import 'package:handyman/screens/provider/screens/view_services/provider_view_booking_screen.dart';
+import 'package:handyman/screens/provider/screens/view_services_details/provider_view_services_details.dart';
 import 'package:handyman/screens/rate_service_screen/rate_service_screen.dart';
 import 'package:handyman/screens/services_sub_categories/services_sub_categories.dart';
 import 'package:handyman/screens/view_bookings/view_bookings_screen.dart';
@@ -27,6 +39,8 @@ import 'package:handyman/screens/location_permission/location_permission_screen.
 import 'package:handyman/screens/otp/otp_screen.dart';
 import 'package:handyman/screens/sign_up/sign_up_screen.dart';
 import 'package:handyman/screens/view_providers_map/view_providers_map.dart';
+
+import 'screens/provider/screens/provider_map_location/provider_map_location_screen.dart';
 
 // We use name route
 // All our routes will be available here
@@ -121,6 +135,7 @@ final Map<String, WidgetBuilder> routes = {
         sp_id: '',
       ),
   FavouriteServices.routeName: (context) => const FavouriteServices(),
+  ChooseAccount.routeName: (context) => const ChooseAccount(),
   ViewProviderMapScreen.routeName: (context) => const ViewProviderMapScreen(),
   OffersDetails.routeName: (context) => const OffersDetails(
         id: '',
@@ -133,4 +148,58 @@ final Map<String, WidgetBuilder> routes = {
         booking_status: '',
         user_booking_status: '',
       ),
+
+  /////////////////////////////////
+  ProvierSignUpScreen.routeName: (context) => const ProvierSignUpScreen(),
+  ProviderSignInScreen.routeName: (context) => const ProviderSignInScreen(),
+
+  ProviderMapScreen.routeName: (context) => const ProviderMapScreen(),
+  ProviderHomeScreen.routeName: (context) => const ProviderHomeScreen(),
+  ProviderProfileScreen.routeName: (context) => const ProviderProfileScreen(),
+  EditProfileScreen.routeName: (context) => const EditProfileScreen(),
+  ChooseTrackingID.routeName: (context) => const ChooseTrackingID(
+      name: '', email: '', gender: '', mobile: '', cnic: '', password: ''),
+  ProviderAddNewServiceScreen.routeName: (context) =>
+      const ProviderAddNewServiceScreen(),
+  AddServiceImages.routeName: (context) => const AddServiceImages(
+        title: '',
+        description: '',
+        note: '',
+        adress: '',
+        speciality: '',
+        rate: '',
+        sub_cat: '',
+      ),
+  ProviderViewServicesScreen.routeName: (context) =>
+      const ProviderViewServicesScreen(),
+  ProviderServiceDetailScreen.routeName: (context) =>
+      const ProviderServiceDetailScreen(
+        id: '',
+        title: '',
+        speciality: '',
+        description: '',
+        note: '',
+        adress: '',
+        rate: '',
+        status: '',
+        spName: '',
+        spId: '',
+        serviceImages: '',
+        serviceImages1: '',
+        serviceImages2: '',
+      ),
+  ProviderViewOffersScreen.routeName: (context) =>
+      const ProviderViewOffersScreen(),
+  ProviderOffersDetails.routeName: (context) => const ProviderOffersDetails(
+        id: '',
+        uid: '',
+        serviceName: '',
+        b_date: '',
+        b_time: '',
+        b_hours: '',
+        b_price: '',
+        booking_status: '',
+      ),
+
+  ///
 };

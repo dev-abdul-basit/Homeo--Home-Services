@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:handyman/constants.dart';
+import 'package:handyman/screens/choose_account/choose_acount.dart';
+import 'package:handyman/screens/provider/screens/home_screen/provider_homescreen.dart';
 import 'package:handyman/screens/sign_in/sign_in_screen.dart';
 import 'package:handyman/screens/sign_up/sign_up_screen.dart';
 import 'package:handyman/size_config.dart';
@@ -29,6 +31,11 @@ class _BodyState extends State<Body> {
       Future.delayed(Duration.zero, () {
         Navigator.of(context)
             .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
+      });
+    } else if (box!.containsKey("provider_login")) {
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            ProviderHomeScreen.routeName, (route) => false);
       });
     }
   }
@@ -107,7 +114,7 @@ class _BodyState extends State<Body> {
                         text: "Create Account",
                         press: () {
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                              SignUpScreen.routeName, (route) => false);
+                              ChooseAccount.routeName, (route) => false);
                         },
                       ),
                     ),

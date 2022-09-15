@@ -192,7 +192,13 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   signUp() async {
-    if (_formKey.currentState!.validate() &&
+    if (imageUrl == 'Empty') {
+      const snackBar = SnackBar(
+        content: Text('Choose Profile Image'),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (_formKey.currentState!.validate() &&
         passwordctrl.text == confirmPasswordctrl.text &&
         imageUrl != 'Empty') {
       _formKey.currentState!.save();
@@ -215,13 +221,7 @@ class _SignUpFormState extends State<SignUpForm> {
     request.fields["adress"] = 'adress';
     request.fields["token"] = mtoken!;
     request.fields["uimage"] = imageUrl;
-
     request.fields["status"] = 'true';
-    //sending post request with header data
-    // var profilePic =
-    //     await http.MultipartFile.fromPath("uimage", _selectedImage!.path);
-
-    // request.files.add(profilePic);
     var response = await request.send();
     print(response.statusCode);
     var responsed = await http.Response.fromStream(response);
@@ -279,6 +279,9 @@ class _SignUpFormState extends State<SignUpForm> {
     var imageFrmCamera = await _picker.pickImage(source: ImageSource.camera);
     setState(() {
       _selectedImage = File(imageFrmCamera!.path);
+      fileName = _selectedImage!.path.split('/').last;
+      print(fileName);
+      uploadImageToFirebase(_selectedImage!, fileName!);
     });
     //if (mounted) Navigator.of(context).pop();
   }
