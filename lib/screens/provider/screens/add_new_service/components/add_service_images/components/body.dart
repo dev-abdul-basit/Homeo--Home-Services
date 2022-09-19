@@ -40,55 +40,38 @@ class _BodyState extends State<Body> {
   bool? error, sending, success;
   String? msg;
   ////////////
-  var snackBar = const SnackBar(
-    content: Text('Yay! A SnackBar!'),
-  );
 
-  // File? _selectedImage;
-  final ImagePicker imagePicker = ImagePicker();
-  List<XFile>? imageFileList = [];
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+
   String? fileName;
-  Uint8List? imagebytes1;
-  String? base64string1;
-  List<String>? base64stringList = [];
 
-  List<Uint8List>? bytesList = [];
-  Uint8List? bytes1;
-  Uint8List? bytes2;
-  List<int>? imageBytes;
-  var imagePath;
-  void selectImages() async {
-    List<XFile>? selectedImages = await imagePicker.pickMultiImage(
-      imageQuality: 40,
-    );
+  String imageUrl = 'Empty';
 
-    if (selectedImages!.isNotEmpty) {
-      for (int i = 0; i < selectedImages.length; i++) {
-        imageBytes = await selectedImages[i].readAsBytes(); //convert to bytes
-        base64string1 = base64.encode(imageBytes!);
-
-        //Decode
-        bytes1 = const Base64Codec().decode(base64string1!);
-        //bytes2 = const Base64Codec().decode(base64string2!);
-        bytesList!.add(bytes1!);
-        // base64stringList!.add(base64string1!);
-        print('list');
-        print(base64stringList);
-      }
-    }
-
+  static const snackBar = SnackBar(
+    content: Text('Provide Required Informaition!'),
+  );
+  //Camera Method
+  Future openCamera() async {
+    Navigator.of(context).pop();
+    var imageFrmCamera = await _picker.pickImage(source: ImageSource.camera);
     setState(() {
-      if (selectedImages.isNotEmpty) {
-        imageFileList!.addAll(selectedImages);
-      }
+      _selectedImage = File(imageFrmCamera!.path);
     });
-    for (int i = 0; i < selectedImages.length; i++) {
-      imagePath = File(selectedImages[i].path);
-      fileName = selectedImages[i].path.split('/').last;
-      //print(path.toString());
+    //if (mounted) Navigator.of(context).pop();
+  }
+
+  //Gallery method
+  Future openGallery() async {
+    Navigator.of(context).pop();
+    var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _selectedImage = File(pickedFile!.path);
+      fileName = _selectedImage!.path.split('/').last;
       print(fileName);
-      uploadImageToFirebase(imagePath, fileName!);
-    }
+      uploadImageToFirebase(_selectedImage!, fileName!);
+    });
+    // if (mounted) Navigator.of(context).pop();
   }
 
   final Reference _storageReference =
@@ -104,7 +87,7 @@ class _BodyState extends State<Body> {
       var downloadUrl = await firebaseFile.ref.getDownloadURL();
 
       setState(() {
-        base64stringList!.add(downloadUrl);
+        imageUrl = downloadUrl;
         print("downloadUrl");
         print(downloadUrl);
       });
@@ -138,7 +121,7 @@ class _BodyState extends State<Body> {
           ),
           SizedBox(height: getProportionateScreenHeight(4)),
           const Text(
-            "You can add upto 3",
+            "",
             style: TextStyle(
               color: kTextColorSecondary,
               fontSize: 14,
@@ -161,39 +144,36 @@ class _BodyState extends State<Body> {
                 ),
                 padding: const EdgeInsets.fromLTRB(8, 24, 8, 24)),
             onPressed: () {
-              selectImages();
+              _optionsDialogBox();
             },
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GridView.builder(
-                  itemCount: base64stringList!.length,
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 5,
-                      childAspectRatio: 1.0),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      color: kFormColor,
-                      child: base64stringList != null
-                          ? Image.network(base64stringList![index])
-                          // : Image.file(
-                          //     File(imageFileList![index].path),
-                          //     fit: BoxFit.cover,
-                          //     width: 150,
-                          //     height: 150,
-                          //   ),
-                          // : Image.memory(bytesList![index]),
-                          : const CircularProgressIndicator(),
-                    );
-                  }),
+              child: Container(
+                margin: const EdgeInsets.only(right: 8),
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18.0),
+                  child: imageUrl == 'Empty'
+                      ? Image.asset(
+                          "assets/images/cleaner_2.png",
+                          fit: BoxFit.fill,
+                          width: 150,
+                          height: 150,
+                        )
+                      : Image.network(
+                          imageUrl,
+                          fit: BoxFit.cover,
+                          width: 150,
+                          height: 150,
+                        ),
+                ),
+              ),
             ),
           ),
           DefaultButton(
@@ -211,7 +191,7 @@ class _BodyState extends State<Body> {
   }
 
   submitService() async {
-    if (base64stringList != null) {
+    if (imageUrl != 'Empty') {
       setState(() {
         sending = true;
       });
@@ -220,22 +200,23 @@ class _BodyState extends State<Body> {
       sendData();
     } else {
       print("Eror");
-      snackBar = const SnackBar(
-        content: Text('OOps!!.Eror'),
+      const snackBar = SnackBar(
+        content: Text('Provide Required Informaition!'),
       );
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
   Future<void> sendData() async {
-    if (base64stringList!.length <= 2) {
-      snackBar = const SnackBar(
-        content: Text('Must Choose 3 images'),
+    if (imageUrl == 'Empty') {
+      const snackBar = SnackBar(
+        content: Text('Provide Required Informaition!'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       sending = false;
       error = true;
-    } else if (base64stringList!.length <= 3) {
+    } else if (imageUrl != 'Empty') {
       var res = await http.post(Uri.parse(webUrl), body: {
         "service_title": widget.title,
         "service_speciality": widget.speciality,
@@ -244,19 +225,19 @@ class _BodyState extends State<Body> {
         "service_extra_note": widget.note,
         "adress": widget.adress,
         "service_status": box!.get('status'),
-        "service_images": base64stringList![0].toString(),
+        "service_images": imageUrl,
         "service_provider_id": box!.get('id').toString(),
         "service_provider_name": box!.get('name'),
         "rate": widget.rate,
         "fav": '0',
-        "image1": base64stringList![1].toString(),
-        "image2": base64stringList![2].toString(),
+        "image1": 'empty',
+        "image2": 'empty',
       }); //sending post request with header data
 
       if (res.statusCode == 200) {
         print('full response:');
         print('sent image:');
-        print(base64string1);
+
         print(res.body); //print raw response on console
         var data = json.decode(res.body); //decoding json to array
         if (data["success"] == 0) {
@@ -267,8 +248,8 @@ class _BodyState extends State<Body> {
             error = true;
             msg = data["msg"];
             print(msg); //error message from server
-            snackBar = SnackBar(
-              content: Text(data["msg"]),
+            const snackBar = SnackBar(
+              content: Text('Provide Required Informaition!'),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
@@ -294,8 +275,8 @@ class _BodyState extends State<Body> {
           print(res.body);
           sending = false;
           //mark error and refresh UI with setState
-          snackBar = const SnackBar(
-            content: Text('OOps!!.Eror'),
+          const snackBar = SnackBar(
+            content: Text('Provide Required Informaition!'),
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         });
@@ -303,10 +284,48 @@ class _BodyState extends State<Body> {
     } else {
       sending = false;
       error = true;
-      print('lenght:' + base64stringList!.length.toString());
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  Future<void> _optionsDialogBox() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Choose Your Method'),
+          backgroundColor: kFormColor,
+          contentPadding: const EdgeInsets.all(20.0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: const Text("Take a Picture"),
+                  onTap: openCamera,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                const Divider(
+                  color: Colors.white70,
+                  height: 1.0,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                GestureDetector(
+                  child: const Text("Open Gallery"),
+                  onTap: openGallery,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void showConfirmationScreen(BuildContext context) {

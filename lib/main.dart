@@ -65,23 +65,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    // Workmanager().registerPeriodicTask(
-    //   "1",
-    //   fetchBackground,
-    //   frequency: const Duration(seconds: 5000),
-    // );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'HandyMan',
       theme: theme(),
       initialRoute: SplashScreen.routeName,
+      debugShowCheckedModeBanner: false,
       routes: routes,
     );
   }

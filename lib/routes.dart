@@ -10,6 +10,7 @@ import 'package:handyman/screens/provider/screens/add_new_service/components/add
 import 'package:handyman/screens/provider/screens/add_new_service/provider_add_new_service_screen.dart';
 import 'package:handyman/screens/provider/screens/home_screen/provider_homescreen.dart';
 import 'package:handyman/screens/provider/screens/offers_detail/provider_offers_detail_screen.dart';
+import 'package:handyman/screens/provider/screens/profile/components/edit_profile/provider_edit_profile_screen.dart';
 import 'package:handyman/screens/provider/screens/profile/provider_profile_screen.dart';
 import 'package:handyman/screens/provider/screens/sign_in/provider_sign_in_screen.dart';
 import 'package:handyman/screens/provider/screens/sign_up/choose_tracking_id/provider_choose_tracking_id_screen.dart';
@@ -154,6 +155,9 @@ final Map<String, WidgetBuilder> routes = {
   ProviderSignInScreen.routeName: (context) => const ProviderSignInScreen(),
 
   ProviderMapScreen.routeName: (context) => const ProviderMapScreen(),
+  ProviderEditProfileScreen.routeName: (context) =>
+      const ProviderEditProfileScreen(),
+
   ProviderHomeScreen.routeName: (context) => const ProviderHomeScreen(),
   ProviderProfileScreen.routeName: (context) => const ProviderProfileScreen(),
   EditProfileScreen.routeName: (context) => const EditProfileScreen(),

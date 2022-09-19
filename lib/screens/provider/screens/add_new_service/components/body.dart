@@ -34,17 +34,21 @@ class _BodyState extends State<Body> {
   String? serviceTitle;
   String? serviceDescription;
   String? extraNote;
+  String serviceMin = '0';
+  String serviceMax = '0';
   String? serviceRate;
   String? adress = box!.get("adress");
   final String url = providerbaseUrl + "admin_get_all_cat_title.php";
   final String subCatUrl = providerbaseUrl + 'admin_get_sub_cat.php';
+  final String priceCatUrl = providerbaseUrl + 'provider_get_cat_price.php';
 
   late List data;
   late List dataSubCat;
 
   var isLoading = false;
   bool isLoadingSUb = false;
-
+  TextEditingController servicepriceMin = TextEditingController();
+  TextEditingController servicepriceMax = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -109,6 +113,8 @@ class _BodyState extends State<Body> {
         } else {
           print('No SUb Cat');
         }
+        // servicepriceMin!.text = dataSubCat[i]['min_price'];
+        // servicepriceMax!.text = dataSubCat[i]['max_price'];
         print(itemsSubCat);
       }
       if (response.body == null) {
@@ -121,6 +127,54 @@ class _BodyState extends State<Body> {
     });
 
     // throw Exception('Failed to load data');
+  }
+
+  Future<void> getPrice(String title) async {
+    var res = await http.post(Uri.parse(priceCatUrl), body: {
+      "cat_status": 'true',
+      "cat_title": title,
+    }); //sending post request with header data
+
+    if (res.statusCode == 200) {
+      print('response:');
+      print(res.body); //print raw response on console
+
+      var data = json.decode(res.body);
+      print('data:');
+      print(data); //decoding json to array
+      if (data["success"] == 0) {
+        setState(() {
+          //refresh the UI when error is recieved from server
+          //error message from server
+          final snackBar = SnackBar(
+            content: Text(data["msg"]),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+      } else {
+        //after write success, make fields empty
+
+        setState(() {
+          print(data["success"]);
+
+          // add data to hive
+
+          if (data["success"] == 1) {
+            servicepriceMin.text = data['min_price'];
+            servicepriceMax.text = data['max_price'];
+          } else {
+            final snackBar = SnackBar(
+              content: Text(data["success"] == 0 ? data["msg"] : data["msg"]),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            print(data["msg"]);
+          }
+        });
+      }
+    } else {
+      //there is error
+      setState(() {});
+    }
   }
 
   @override
@@ -178,6 +232,7 @@ class _BodyState extends State<Body> {
                                 print(dropdownvalue);
 
                                 getSubCategories(dropdownvalue);
+                                getPrice(dropdownvalue);
                               });
                             },
                           ),
@@ -257,7 +312,7 @@ class _BodyState extends State<Body> {
                     buildServiceNoteFormField(),
                     SizedBox(height: getProportionateScreenHeight(8)),
                     const Text(
-                      "Set Your Hourly Rate (PKR)",
+                      "Set Your Rate (PKR)",
                       style: TextStyle(
                         color: kTextColorSecondary,
                         fontSize: 12,
@@ -265,6 +320,13 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                     SizedBox(height: getProportionateScreenHeight(8)),
+                    SizedBox(height: getProportionateScreenHeight(20)),
+                    Row(children: [
+                      Expanded(child: buildServiceMinFormField()),
+                      SizedBox(width: getProportionateScreenHeight(20)),
+                      Expanded(child: buildServiceMaxFormField()),
+                    ]),
+                    SizedBox(height: getProportionateScreenHeight(12)),
                     buildRateFormField(),
                     SizedBox(height: getProportionateScreenHeight(8)),
                     const Text(
@@ -293,6 +355,69 @@ class _BodyState extends State<Body> {
           ),
         ),
       ),
+    );
+  }
+
+  TextFormField buildServiceMinFormField() {
+    return TextFormField(
+      enabled: false,
+      controller: servicepriceMin,
+      cursorColor: kPrimaryColor,
+      keyboardType: TextInputType.number,
+      onSaved: (newValue) => serviceMin = newValue!,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "Please fill";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(color: kPrimaryColor),
+        ),
+        labelStyle: const TextStyle(color: kPrimaryColor),
+        focusColor: kPrimaryColor,
+        hintText: "00",
+        labelText: 'min',
+        fillColor: kFormColor,
+        filled: true,
+      ),
+    );
+  }
+
+  TextFormField buildServiceMaxFormField() {
+    return TextFormField(
+      enabled: false,
+      controller: servicepriceMax,
+      cursorColor: kPrimaryColor,
+      keyboardType: TextInputType.number,
+      onSaved: (newValue) => serviceMax = newValue!,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "Please fill";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: const BorderSide(color: kPrimaryColor),
+          ),
+          labelStyle: const TextStyle(color: kPrimaryColor),
+          focusColor: kPrimaryColor,
+          hintText: "00",
+          fillColor: kFormColor,
+          filled: true,
+          labelText: 'max'),
     );
   }
 
@@ -334,6 +459,26 @@ class _BodyState extends State<Body> {
       validator: (value) {
         if (value!.isEmpty) {
           return "Please fill in this";
+        } else if (int.parse(value) < int.parse(servicepriceMin.text)) {
+          return "Incorrect Value";
+        } else if (int.parse(value) > int.parse(servicepriceMax.text)) {
+          return "Incorrect Value";
+        }
+        return null;
+      },
+      onChanged: (value) {
+        if (value.isEmpty) {
+          setState(() {
+            "Please fill in this";
+          });
+        } else if (int.parse(value) <= int.parse(servicepriceMin.text)) {
+          setState(() {
+            "Incorrect Value";
+          });
+        } else if (int.parse(value) >= int.parse(servicepriceMax.text)) {
+          setState(() {
+            "Incorrect Value";
+          });
         }
         return null;
       },

@@ -32,7 +32,7 @@ class _ServiceImageHeaderState extends State<ServiceImageHeader> {
                 setState(() {});
               },
               scrollDirection: Axis.horizontal,
-              itemCount: _listImages.length,
+              itemCount: 1,
               itemBuilder: (context, index) {
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.4,
@@ -54,7 +54,7 @@ class _ServiceImageHeaderState extends State<ServiceImageHeader> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              widget.listImages.length,
+              1,
               (index) => buildDot(index: index),
             ),
           ),

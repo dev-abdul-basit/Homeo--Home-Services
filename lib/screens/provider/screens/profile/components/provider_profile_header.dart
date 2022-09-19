@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:handyman/screens/profile/components/edit_profile/edit_profile_screen.dart';
 import 'package:handyman/screens/provider/screens/profile/components/edit_profile/provider_edit_profile_screen.dart';
 
 import '../../../../../helper/global_config.dart';
@@ -69,7 +70,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 height: 32,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, EditProfileScreen.routeName);
+                    Navigator.pushNamed(
+                        context, ProviderEditProfileScreen.routeName);
                   },
                   child: const Text(
                     "Edit Profile",

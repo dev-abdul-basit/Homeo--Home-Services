@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import '../../../../provider_constants.dart';
 import 'components/body.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+class ProviderEditProfileScreen extends StatefulWidget {
+  const ProviderEditProfileScreen({Key? key}) : super(key: key);
 
-  static String routeName = "/edit_profile";
+  static String routeName = "/edit_profile_provider";
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  State<ProviderEditProfileScreen> createState() =>
+      _ProviderEditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _ProviderEditProfileScreenState extends State<ProviderEditProfileScreen> {
   // Initially TextField is disabled
   bool _enabled = false;
 

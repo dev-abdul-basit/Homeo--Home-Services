@@ -11,15 +11,10 @@ import 'package:handyman/screens/sign_in/sign_in_screen.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-
 import 'package:image_picker/image_picker.dart';
-
-import 'dart:async';
-import 'dart:io';
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:async';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -52,7 +47,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   bool? error, sending, success;
   String? msg;
-  // String webUrl = "https://cwp-handyman.herokuapp.com/users";
+
   String webUrl = baseUrl + "flutterfyp/Registeruser.php";
 
   // Initially password is obscure

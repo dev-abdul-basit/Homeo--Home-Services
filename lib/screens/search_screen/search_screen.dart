@@ -23,7 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool? searching, error;
   var data;
   String? query;
-  String dataurl = baseUrl + "provider/search.php" "?query=";
+  String dataurl = baseUrl + "/provider/search.php" "?query=";
 
   @override
   void initState() {

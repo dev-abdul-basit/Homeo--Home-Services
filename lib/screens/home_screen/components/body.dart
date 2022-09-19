@@ -5,7 +5,7 @@ import 'package:handyman/screens/home_screen/components/home_service_list.dart';
 import 'package:handyman/screens/view_providers_map/view_providers_map.dart';
 
 import '../../../size_config.dart';
-import 'home_service_filters.dart';
+
 import 'home_services.dart';
 
 import 'home_header.dart';

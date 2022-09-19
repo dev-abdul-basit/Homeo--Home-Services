@@ -112,7 +112,7 @@ class _ApprovedServicesState extends State<ApprovedServices> {
                               height: 96,
                               fit: BoxFit.fill,
                               image: NetworkImage(
-                                data[index]['image1'],
+                                data[index]['service_images'],
                               ),
                             ),
                           ),
