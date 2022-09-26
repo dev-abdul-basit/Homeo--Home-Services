@@ -5,18 +5,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:async';
-
-import 'package:http/http.dart' as http;
 
 import '../../../../../../../helper/global_config.dart';
 import '../../../../../../../helper/keyboard.dart';
@@ -49,7 +42,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
   File? _selectedImage;
   String? fileName;
   // The inital gender value
-  Gender _selectedGender = Gender.male;
+  Gender? _selectedGender;
 
   bool? error, sending, success;
   String? msg;
@@ -103,8 +96,20 @@ class _EditProfileFormState extends State<EditProfileForm> {
     error = false;
     sending = false;
     success = false;
-    gender = _selectedGender.name.toString();
+
     msg = "";
+    print(box!.get('gender'));
+    if (box!.get('gender') != null) {
+      if (box!.get('gender') == 'female') {
+        _selectedGender = Gender.female;
+        gender = _selectedGender!.name.toString();
+      } else if (box!.get('gender') == 'male') {
+        _selectedGender = Gender.male;
+        gender = _selectedGender!.name.toString();
+      }
+    } else {
+      _selectedGender = Gender.male;
+    }
     profileImage = box!.get('profile_img');
   }
 
@@ -178,7 +183,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
                           ),
                         ),
                         SizedBox(height: getProportionateScreenHeight(6)),
-
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,20 +241,18 @@ class _EditProfileFormState extends State<EditProfileForm> {
                             ],
                           ),
                         ),
+                        const Text(
+                          "Gender",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: Colors.black54,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: <Widget>[
-                              const Expanded(
-                                child: Text(
-                                  "Gender",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                              ),
                               Expanded(
                                 child: Row(
                                   children: [
@@ -306,69 +308,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
                             ],
                           ),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8),
-                        //   child: Row(
-                        //     mainAxisSize: MainAxisSize.min,
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Expanded(
-                        //         child: Padding(
-                        //           padding: const EdgeInsets.all(8.0),
-                        //           child: Column(
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             children: [
-                        //               Padding(
-                        //                 padding: const EdgeInsets.all(8.0),
-                        //                 child: Text(
-                        //                   "City",
-                        //                   style: secondaryTextStyle12,
-                        //                 ),
-                        //               ),
-                        //               buildCityNameFormField(),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       Expanded(
-                        //         child: Padding(
-                        //           padding: const EdgeInsets.all(8.0),
-                        //           child: Column(
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             children: [
-                        //               Padding(
-                        //                 padding: const EdgeInsets.all(8.0),
-                        //                 child: Text(
-                        //                   "Country",
-                        //                   style: secondaryTextStyle12,
-                        //                 ),
-                        //               ),
-                        //               buildCountryNameFormField(),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8.0),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Padding(
-                        //         padding: const EdgeInsets.all(8.0),
-                        //         child: Text(
-                        //           "About",
-                        //           style: secondaryTextStyle12,
-                        //         ),
-                        //       ),
-                        //       buildAboutFormField(),
-                        //     ],
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

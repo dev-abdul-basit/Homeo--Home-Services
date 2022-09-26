@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:handyman/screens/provider/screens/add_new_service/provider_add_new_service_screen.dart';
+import 'package:handyman/screens/provider/screens/profile/provider_profile_screen.dart';
 import 'package:handyman/screens/provider/screens/view_offers/provider_view_offers_screen.dart';
 import 'package:handyman/screens/provider/screens/view_services/provider_view_booking_screen.dart';
 
@@ -163,7 +164,10 @@ class _HomeMenuState extends State<HomeMenu> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, ProviderProfileScreen.routeName);
+                    },
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(18.0),

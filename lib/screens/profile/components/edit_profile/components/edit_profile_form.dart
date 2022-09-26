@@ -49,7 +49,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
   File? _selectedImage;
   String? fileName;
   // The inital gender value
-  Gender _selectedGender = Gender.male;
+  Gender? _selectedGender;
 
   bool? error, sending, success;
   String? msg;
@@ -103,8 +103,20 @@ class _EditProfileFormState extends State<EditProfileForm> {
     error = false;
     sending = false;
     success = false;
-    gender = _selectedGender.name.toString();
+
     msg = "";
+    print(box!.get('gender'));
+    if (box!.get('gender') != null) {
+      if (box!.get('gender') == 'female') {
+        _selectedGender = Gender.female;
+        gender = _selectedGender!.name.toString();
+      } else if (box!.get('gender') == 'male') {
+        _selectedGender = Gender.male;
+        gender = _selectedGender!.name.toString();
+      }
+    } else {
+      _selectedGender = Gender.male;
+    }
     profileImage = box!.get('uimage');
   }
 
@@ -237,20 +249,18 @@ class _EditProfileFormState extends State<EditProfileForm> {
                             ],
                           ),
                         ),
+                        const Text(
+                          "Gender",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: Colors.black54,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: <Widget>[
-                              const Expanded(
-                                child: Text(
-                                  "Gender",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                              ),
                               Expanded(
                                 child: Row(
                                   children: [
