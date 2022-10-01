@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:handyman/constants.dart';
-import 'package:handyman/screens/book_a_service_screen/components/working_hours_container.dart';
 
-import '../../../components/default_button.dart';
-import '../../../helper/global_config.dart';
-import '../../../size_config.dart';
-import '../../booking_summary/booking_summary.dart';
 import 'date_and_time_container.dart';
-import 'special_instructions.dart';
 
 class Body extends StatefulWidget {
   const Body({

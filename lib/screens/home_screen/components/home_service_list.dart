@@ -4,7 +4,6 @@ import 'package:handyman/screens/service_detail_screen/service_detail_screen.dar
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:async';
 
 import '../../../helper/global_config.dart';
 
@@ -226,7 +225,7 @@ class _HomeServiceListState extends State<HomeServiceList> {
                               height: 96,
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                data[index]['image1'],
+                                data[index]['service_images'],
                               ),
                             ),
                           ),

@@ -66,8 +66,13 @@ class _BodyState extends State<Body> {
       var convertDataToJson = json.decode(response.body)['result'];
       data = convertDataToJson;
       isLoading = true;
+
       for (var i = 0; i < data.length; i++) {
-        items.add(data[i]['cat_title']);
+        print('data');
+        print(data[i]['cat_status']);
+        if (data[i]['cat_status'] == 'true') {
+          items.add(data[i]['cat_title']);
+        }
       }
       print(data);
       print(items);
@@ -81,6 +86,7 @@ class _BodyState extends State<Body> {
       "Accept": "application/json"
     }, body: {
       "cat_title": title,
+      "cat_status": 'true',
     });
     //print(response.body);
     setState(() {
@@ -88,27 +94,34 @@ class _BodyState extends State<Body> {
       dataSubCat = convertDataToJson;
 
       isLoadingSUb = true;
+      // itemsSubCat.clear();
+      itemsSubCat = ['Select'];
 
       for (var i = 0; i < dataSubCat.length; i++) {
-        if (dataSubCat[i]['sub5'] != null) {
+        if (dataSubCat[i]['sub5'] != null &&
+            dataSubCat[i]['cat_title'] == title) {
           itemsSubCat.add(dataSubCat[i]['sub1']);
           itemsSubCat.add(dataSubCat[i]['sub2']);
           itemsSubCat.add(dataSubCat[i]['sub3']);
           itemsSubCat.add(dataSubCat[i]['sub4']);
           itemsSubCat.add(dataSubCat[i]['sub5']);
-        } else if (dataSubCat[i]['sub4'] != null) {
+        } else if (dataSubCat[i]['sub4'] != null &&
+            dataSubCat[i]['cat_title'] == title) {
           itemsSubCat.add(dataSubCat[i]['sub1']);
           itemsSubCat.add(dataSubCat[i]['sub2']);
           itemsSubCat.add(dataSubCat[i]['sub3']);
           itemsSubCat.add(dataSubCat[i]['sub4']);
-        } else if (dataSubCat[i]['sub3'] != null) {
+        } else if (dataSubCat[i]['sub3'] != null &&
+            dataSubCat[i]['cat_title'] == title) {
           itemsSubCat.add(dataSubCat[i]['sub1']);
           itemsSubCat.add(dataSubCat[i]['sub2']);
           itemsSubCat.add(dataSubCat[i]['sub3']);
-        } else if (dataSubCat[i]['sub2'] != null) {
+        } else if (dataSubCat[i]['sub2'] != null &&
+            dataSubCat[i]['cat_title'] == title) {
           itemsSubCat.add(dataSubCat[i]['sub1']);
           itemsSubCat.add(dataSubCat[i]['sub2']);
-        } else if (dataSubCat[i]['sub1'] != null) {
+        } else if (dataSubCat[i]['sub1'] != null &&
+            dataSubCat[i]['cat_title'] == title) {
           itemsSubCat.add(dataSubCat[i]['sub1']);
         } else {
           print('No SUb Cat');
@@ -241,6 +254,7 @@ class _BodyState extends State<Body> {
                     ),
                     SizedBox(height: getProportionateScreenHeight(16)),
                     ////
+                    const Text("Choose Sub Category"),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 20, 0, 0),
                       child: Container(
@@ -248,7 +262,7 @@ class _BodyState extends State<Body> {
                             borderRadius: BorderRadius.circular(16),
                             color: kTextColorSecondary.withOpacity(0.5)),
                         child: ListTile(
-                          title: const Text("Choose Sub Category"),
+                          title: const Text(''),
                           trailing: DropdownButton(
                             // Initial Value
                             value: dropdownvalueSub,

@@ -216,7 +216,7 @@ class _ServiceListState extends State<ServiceList> {
                               height: 96,
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                data[index]['image1'],
+                                data[index]['service_images'],
                               ),
                             ),
                           ),

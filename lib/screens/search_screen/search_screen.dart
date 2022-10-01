@@ -5,8 +5,6 @@ import 'package:handyman/screens/home_screen/homescreen.dart';
 import '../../constants.dart';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 import '../all_services_list_screen/all_services_list_screen.dart';
@@ -23,8 +21,8 @@ class _SearchScreenState extends State<SearchScreen> {
   bool? searching, error;
   var data;
   String? query;
-  String dataurl = baseUrl + "/provider/search.php" "?query=";
-
+  //String dataurl = baseUrl + "/provider/search.php" "?query=";
+  String dataurl = baseUrl + "/provider/search.php";
   @override
   void initState() {
     searching = false;
@@ -34,13 +32,27 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void getSuggestion() async {
-    final url = dataurl + query!;
     //get suggestion function
-    var res = await http.post(Uri.parse(url));
+    var res = await http.post(
+        Uri.parse(dataurl + "?query=" + Uri.encodeComponent(query!)),
+        body: {
+          "service_title": _controller.text,
+        });
     //in query there might be unwant character so, we encode the query to url
     if (res.statusCode == 200) {
       setState(() {
         data = json.decode(res.body);
+        print(data);
+        if (data.toString().contains('true')) {
+          print('eerrorooror');
+          const snackBar = SnackBar(
+            content: Text('No Results, Try again'),
+          );
+
+// Find the ScaffoldMessenger in the widget tree
+// and use it to show a SnackBar.
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
         //update data value and UI
       });
     } else {
@@ -56,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.white, //change your color here
           ),
           leading: searching!
@@ -101,7 +113,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     ? Container(
                         padding: const EdgeInsets.all(20),
                         child: searching!
-                            ? const Text("Please wait")
+                            ? Text(data.toString().contains('true')
+                                ? 'No Results'
+                                : "Please wait")
                             : const Text("Search any services")
                         //if is searching then show "Please wait"
                         //else show search peopels text
@@ -146,7 +160,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(15),
                     child: Text(
-                      suggestion.name,
+                      data.toString().contains('true')
+                          ? 'Try Again, Nothing found'
+                          : suggestion.name,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -162,7 +178,9 @@ class _SearchScreenState extends State<SearchScreen> {
     //search input field
     return Container(
         child: TextField(
+      controller: _controller,
       autofocus: true,
+      //textInputAction: TextInputAction.search,
       style: const TextStyle(color: Colors.white, fontSize: 18),
       decoration: const InputDecoration(
         hintStyle: TextStyle(color: Colors.white, fontSize: 18),
@@ -176,7 +194,10 @@ class _SearchScreenState extends State<SearchScreen> {
       ), //decoration for search input field
       onChanged: (value) {
         query = value; //update the value of query
-        getSuggestion(); //start to get suggestion
+        // getSuggestion(); //start to get suggestion
+      },
+      onSubmitted: (value) {
+        getSuggestion();
       },
     ));
   }

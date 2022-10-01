@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants.dart';
 import '../../../helper/global_config.dart';
@@ -95,13 +96,23 @@ class _ServiceProviderInfoState extends State<ServiceProviderInfo> {
                   color: Colors.green,
                   size: 36,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  _makePhoneCall(mobile);
+                },
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 
   Future<void> sendData() async {
